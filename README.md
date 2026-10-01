@@ -12,16 +12,20 @@ Intel introduced SSE4.2 in the first Core i CPU generation from 2009, AMD introd
 FX processors in 2011. The Windows setup will abort the update if the CPU does not support these 
 instructions and this limitation cannot be bypassed. Use this script on your own risk!
 
-To initiate an automatic upgrade to Windows 11 26H2 on unsupported hardware, press **Windows + R**, 
-then paste and run the following command (replace `11_26H2` with `11_25H2` to get 25H2 instead):
-```
-powershell $v = '11_26H2'; $f = """$env:TEMP\auto $([CultureInfo]::InstalledUICulture) $v MediaCreationTool.bat""""; Invoke-WebRequest https://raw.githubusercontent.com/imperia777/MediaCreationTool.bat/hack26h2/MediaCreationTool.bat -OutFile $f; .$f
-```
+To upgrade to Windows 11 26H2 on unsupported hardware:
 
-Except for a User Account Control prompt requesting administrator privileges, this update command 
-executes the update process automatically without any additional user input. Make sure to not 
-interact with your computer until the save dialog for the ISO file appeared. The script may stall 
-if the Windows setup window does not remain in focus during this step.
+1. Click **Code → Download ZIP** on this page and extract it to a folder
+2. Double-click `MediaCreationTool.bat` and accept the User Account Control prompt
+3. Select **11_26H2** (or **11_25H2**) and **Auto Upgrade**
+
+Tip: rename the script to `auto 11_26H2 MediaCreationTool.bat` to skip the selection dialogs.
+
+The previously suggested PowerShell one-liner that downloads and runs the script is no longer 
+recommended, as Windows Defender flags this download-and-run pattern (`Trojan:Win32/Commando.A!ml`).
+
+After selecting the options, the update process runs automatically without any additional user 
+input. Make sure to not interact with your computer and not switch to other windows: the script 
+interacts with the Windows setup window and may stall if it does not remain in focus.
 
 Since 25H2, Microsoft no longer publishes a static products CAB file for the Media Creation Tool, 
 so a products.xml downloaded with MediaCreationTool.exe is part of this repo (`products.xml` for 25H2, 

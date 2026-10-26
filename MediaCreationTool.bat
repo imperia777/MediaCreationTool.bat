@@ -1,5 +1,5 @@
 @goto latest at github.com/AveYo/MediaCreationTool.bat
-:Universal MCT wrapper script for all Windows 10/11 versions from 1507 to 24H2!
+:Universal MCT wrapper script for all Windows 10/11 versions from 1507 to 26H2!
 :: Nothing but Microsoft-hosted source links and no third-party tools; script just configures an xml and starts MCT
 :: Ingenious support for business editions (Enterprise / VL) selecting language, x86, x64 or AiO inside the MCT GUI
 :: Changelog: 2024.10.10 stable

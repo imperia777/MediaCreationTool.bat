@@ -62,6 +62,8 @@ call :reg_query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion" "EditionID" 
 call :reg_query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion" "ProductName"            OS_PRODUCT
 call :reg_query "HKU\S-1-5-18\Control Panel\Desktop\MuiCached" "MachinePreferredUILanguages" OS_LANGCODE
 for %%s in (%OS_LANGCODE%) do set "OS_LANGCODE=%%s"
+::# MuiCached is the display language of the SYSTEM user - prefer the language Windows was installed from, needed for upgrade
+for /f %%s in ('powershell -nop -c "[CultureInfo]::InstalledUICulture.Name" 2^>nul') do set "OS_LANGCODE=%%s"
 set "OS_ARCH=x64" & if "%PROCESSOR_ARCHITECTURE:~-2%" equ "86" if not defined PROCESSOR_ARCHITEW6432 set "OS_ARCH=x86"
 
 ::# parse MCT choice from script name or commandline - accepts both formats: 1909 or 19H2 etc.

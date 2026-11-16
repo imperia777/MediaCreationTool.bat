@@ -481,6 +481,13 @@ EXIT
    cmd /d /x /c "(reg add $K /v EditionID /d $E /reg:64 /f & reg delete $K /v ProductName /reg:64 /f) >nul 2>nul"
  }
 
+#:: remove stale Skip_TPM_Check_on_Dynamic_Update IFEO rule if its get11.cmd was deleted - setup quits silently with 0x80070002
+ $ifeo = 'HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\SetupHost.exe'
+ $dbg = (Get-ItemProperty "Registry::$ifeo\0" -ea 0).Debugger
+ if ($dbg -and -not (test-path -lit $dbg)) {
+   reg.exe delete $ifeo /f 2>&1>$null; write-host -fore Yellow "Removed stale SetupHost.exe debugger rule ($dbg not found)"
+ }
+
 #:: enable Windows 11 installation on unsupported hardware via registry modifications
  if ($env:X -eq '11') {
    reg.exe delete "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\CompatMarkers" /f 2>&1>$null
@@ -799,6 +806,10 @@ reg add HKLM\SYSTEM\Setup\MoSetup /f /v AllowUpgradesWithUnsupportedTPMorCPU /d 
 if "%SKIP_11_SETUP_CHECKS%" equ "1" cd.>appraiserres.dll 2>nul & rem ::# writable media only
 for %%A in (appraiserres.dll) do if %%~zA gtr 0 (set TRICK=/Product Server ) else (set TRICK=)
 if "%SKIP_11_SETUP_CHECKS%" equ "1" (set OPTIONS=%TRICK%%OPTIONS%)
+
+::# remove stale Skip_TPM_Check_on_Dynamic_Update rule if its get11.cmd was deleted - setup quits silently with 0x80070002
+set "SH=HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\SetupHost.exe"
+for /f "tokens=2*" %%R in ('reg query "%SH%\0" /v Debugger 2^>nul ^| findstr /i /c:"REG_"') do if not exist "%%S" reg delete "%SH%" /f >nul 2>nul
 
 ::# auto upgrade with edition lie workaround to keep files and apps - all 1904x builds allow up/downgrade between them
 if defined reg call :rename %reg%

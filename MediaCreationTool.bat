@@ -151,6 +151,8 @@ set "VER=26300" & set "VID=11_26H2" & set "CB=26300.9457.260913-1737.26h2_ge_rel
 set "XML=https://raw.githubusercontent.com/imperia777/MediaCreationTool.bat/hack26h2/products_11_26H2.xml"
 set "XMLFILE=products_11_26H2.xml"
 set "EXE=https://download.microsoft.com/download/0a8b07d9-a3bf-47b9-b71b-8e13354cec88/MediaCreationTool.exe"
+:: dynamic update offers 24H2 checkpoint KB5043080 that fails in SAFE_OS with 0x80070057 - 0x20003, so always disable it
+set "OPTIONS=%OPTIONS:/DynamicUpdate Enable=/DynamicUpdate Disable%"
 goto process ::# windows 11 26H2
 
 :choice-19

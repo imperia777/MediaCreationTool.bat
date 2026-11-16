@@ -20,6 +20,11 @@ To upgrade to Windows 11 26H2 on unsupported hardware:
 
 Tip: rename the script to `auto 11_26H2 MediaCreationTool.bat` to skip the selection dialogs.
 
+For 26H2, Dynamic Update is always disabled: Setup would otherwise download the 24H2 update KB5043080 
+and fail with `0x80070057 - 0x20003` in the SAFE_OS phase. Install the latest updates via Windows Update 
+after the upgrade. A leftover `Skip_TPM_Check_on_Dynamic_Update` rule whose `C:\Scripts\get11.cmd` was 
+deleted (Setup closes silently with `0x80070002`) is removed automatically.
+
 The previously suggested PowerShell one-liner that downloads and runs the script is no longer 
 recommended, as Windows Defender flags this download-and-run pattern (`Trojan:Win32/Commando.A!ml`).
 
